@@ -8,6 +8,7 @@ $grayText: #71767b;
 $dangerColor: #dc2626;
 $dangerHoverColor: #dc26268e;
 $grayColor: #6b7280;
+$grayHoverColor: #4b4d52;
 
 * {
   background-color: $backgroundColor;
@@ -26,12 +27,51 @@ $grayColor: #6b7280;
 
 .button {
   border: none;
-  padding: 2px 8px;
+  padding: 4px 8px;
   border-radius: 999px;
   font-size: 12px;
   line-height: 1.25rem;
   font-weight: 600;
   cursor: pointer;
+}
+
+.post__flex {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+// Footer
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  color: #fff;
+  width: 100%;
+  height: 60px;
+  max-width: 600px;
+  margin: 0 auto;
+  border: 1px solid $borderColor;
+  background-color: transparent;
+
+  &__grid {
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    button {
+      flex: 1;
+      height: 100%;
+      font-size: 20px;
+      color: #fff;
+
+      &:hover {
+        color: $grayHoverColor;
+      }
+    }
+  }
 }
 
 // Home 레이아웃
@@ -40,7 +80,7 @@ $grayColor: #6b7280;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 12px;
+    padding-top: 12px;
     margin-bottom: 12px;
 
     img {
@@ -121,4 +161,81 @@ $grayColor: #6b7280;
     font-size: 14px;
     background-color: $grayColor;
   }
+}
+
+// Home의 Post Layout
+.post {
+  padding-bottom: 40px;
+
+  &__flex {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  &__email, &__createdAt {
+    font-size: 12px;
+    color: $grayText;
+  }
+
+  &__box {
+    padding: 10px 0px;
+    border-bottom: 1px solid $borderColor;
+
+    &-profile {
+      padding: 0px 10px;
+
+      &-img, &-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50px;
+        margin-right: 10px;
+      }
+    }
+
+    &-content {
+      display: block;
+      font-weight: 500;
+      padding: 16px;
+    }
+
+    &-footer {
+      padding: 0 16px;
+      margin-top: 10px;
+      font-size: 14px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-direction: row-reverse;
+
+      button {
+        @extend .button;
+        &.post__delete {
+          background-color: $dangerColor;
+        
+          &:hover,  &:focus {
+            background-color: $dangerHoverColor;
+          }
+        }
+
+        &.post__edit {
+          background-color: $grayColor;
+
+          &:hover,  &:focus {
+            background-color: $grayHoverColor;
+          }
+        }
+
+        &.post__likes, &.post__comments {
+          @extend .post__flex;
+
+          &:hover , &:focus {
+            color: $grayText
+          }
+        }
+      }
+    }
+  }
+  
+  
 }
