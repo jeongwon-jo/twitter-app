@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, signInWithPopup, GoogleAuthProvider, GithubAuthProvider } from "firebase/auth";
 import { app } from "firebaseApp";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -57,11 +57,42 @@ export default function SignupForm() {
 				setError("");
 			}
     }
-  }
+	}
+	
+	const onClickSocialLogin = async (e: any) => {
+		const { target: { name } } = e;
+		
+		let provider;
+		const auth = getAuth(app);
+		
+		if (name === "google") {
+			provider = new GoogleAuthProvider();
+		}
+
+		if (name === "github") { 
+			provider = new GithubAuthProvider();
+		}
+
+		await signInWithPopup(auth, provider as GoogleAuthProvider | GithubAuthProvider)
+			.then((result) => {
+				// const credential = GoogleAuthProvider.credentialFromResult(result);
+				// const token = credential?.accessToken;
+				// const user = result.user;
+				toast.success("로그인 되었습니다.")
+			})
+			.catch((error) => {
+				// const errorCode = error.code;
+				const errorMessage = error.message;
+				// const email = error.customData.email;
+				// const credential = GoogleAuthProvider.credentialFromError(error);
+				toast.error(errorMessage);
+			});
+		
+	}
 
   return (
 		<form className="form form--lg" onSubmit={onSubmit}>
-			<div className="form__title">회원가입</div>
+			<div className="form__title">지금 가입하세요.</div>
 			<div className="form__block">
 				<label htmlFor="email">이메일</label>
 				<input
@@ -70,6 +101,7 @@ export default function SignupForm() {
 					id="email"
 					value={email}
 					required
+					autoComplete="off"
 					onChange={onChange}
 				/>
 			</div>
@@ -81,6 +113,7 @@ export default function SignupForm() {
 					id="password"
 					value={password}
 					required
+					autoComplete="off"
 					onChange={onChange}
 				/>
 			</div>
@@ -92,6 +125,7 @@ export default function SignupForm() {
 					id="password_confirm"
 					value={passwordConfirm}
 					required
+					autoComplete="off"
 					onChange={onChange}
 				/>
 			</div>
@@ -106,13 +140,33 @@ export default function SignupForm() {
 					로그인하기
 				</Link>
 			</div>
-			<div className="form__block">
+			<div className="form__block--lg">
 				<button
 					type="submit"
 					className="form__btn-submit"
 					disabled={error?.length > 0}
 				>
-					회원가입
+					계정 만들기
+				</button>
+			</div>
+			<div className="form__block--lg">
+				<button
+					type="button"
+					name="google"
+					className="form__btn-google"
+					onClick={onClickSocialLogin}
+				>
+					구글로 회원가입
+				</button>
+			</div>
+			<div className="form__block--lg">
+				<button
+					type="button"
+					name="github"
+					className="form__btn-github"
+					onClick={onClickSocialLogin}
+				>
+					Github로 회원가입
 				</button>
 			</div>
 		</form>

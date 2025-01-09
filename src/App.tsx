@@ -4,6 +4,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth"
 import { app } from "firebaseApp"
 import { useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
+import Loader from 'components/loader/Loader';
 
 
 function App() {
@@ -21,15 +22,14 @@ function App() {
 			} else {
 				setIsAuthenticated(false);
 			}
-
 			setInit(true);
 		})
 	}, [auth])
 
   return (
 		<Layout>
-			<ToastContainer />
-			{init ? <Router isAuthenticated={isAuthenticated} /> : "loading..."}
+			<ToastContainer theme='dark' autoClose={1000} hideProgressBar newestOnTop/>
+			{init ? <Router isAuthenticated={isAuthenticated} /> : <Loader />}
 		</Layout>
 	);
 }
