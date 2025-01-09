@@ -1,16 +1,12 @@
 import { useNavigate } from "react-router-dom"
 import { GoHomeFill } from "react-icons/go";
 import { IoPerson } from "react-icons/io5";
-import { FiLogIn } from "react-icons/fi";
 import { FiLogOut } from "react-icons/fi";
-import { useContext } from "react";
 import { getAuth, signOut } from "firebase/auth";
-import AuthContext from "context/AuthContext";
 import { app } from "firebaseApp";
 import { toast } from "react-toastify";
 
 export default function MenuList() {
-	const {user} = useContext(AuthContext)
 	const navigate = useNavigate();
 
 	const onSignOut = async () => {
@@ -33,15 +29,9 @@ export default function MenuList() {
 				<button type="button" onClick={() => navigate("/profile")}>
 					<IoPerson />
 				</button>
-				{user === null ? (
-					<button type="button" onClick={() => navigate("/users/login")}>
-						<FiLogIn />
-					</button>
-				) : (
-					<button type="button" onClick={onSignOut}>
-						<FiLogOut />
-					</button>
-				)}
+				<button type="button" onClick={onSignOut}>
+					<FiLogOut />
+				</button>
 			</div>
 		</div>
 	);

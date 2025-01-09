@@ -1,4 +1,5 @@
 import { createUserWithEmailAndPassword, getAuth, signInWithPopup, GoogleAuthProvider, GithubAuthProvider } from "firebase/auth";
+import logo from "../../assets/images/common/logo.png";
 import { app } from "firebaseApp";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,7 +11,7 @@ export default function SignupForm() {
   const [password, setPassword] = useState<string>("")
   const [passwordConfirm, setPasswordConfirm] = useState<string>("")
   const navigate = useNavigate();
-  
+
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		try {
@@ -90,85 +91,107 @@ export default function SignupForm() {
 		
 	}
 
-  return (
-		<form className="form form--lg" onSubmit={onSubmit}>
-			<div className="form__title">지금 가입하세요.</div>
-			<div className="form__block">
-				<label htmlFor="email">이메일</label>
-				<input
-					type="text"
-					name="email"
-					id="email"
-					value={email}
-					required
-					autoComplete="off"
-					onChange={onChange}
-				/>
-			</div>
-			<div className="form__block">
-				<label htmlFor="password">비밀번호</label>
-				<input
-					type="password"
-					name="password"
-					id="password"
-					value={password}
-					required
-					autoComplete="off"
-					onChange={onChange}
-				/>
-			</div>
-			<div className="form__block">
-				<label htmlFor="password_confirm">비밀번호 확인</label>
-				<input
-					type="password"
-					name="password_confirm"
-					id="password_confirm"
-					value={passwordConfirm}
-					required
-					autoComplete="off"
-					onChange={onChange}
-				/>
-			</div>
-			{error && error?.length > 0 && (
-				<div className="form__block">
-					<div className="form__error">{error}</div>
+	return (
+		<>
+			<div className="logo_header">
+				<button
+					type="button"
+					className="btn_back"
+					onClick={() => {
+						navigate(-1);
+					}}
+				></button>
+				<div className="logo">
+					<img src={logo} alt="로고" />
 				</div>
-			)}
-			<div className="form__block">
-				계정이 있으신가요?
-				<Link to="/users/login" className="form__link">
-					로그인하기
-				</Link>
 			</div>
-			<div className="form__block--lg">
-				<button
-					type="submit"
-					className="form__btn-submit"
-					disabled={error?.length > 0}
-				>
-					계정 만들기
-				</button>
+			<div className="account-page">
+				<form className="form form--lg" onSubmit={onSubmit}>
+					<div className="form__title">계정을 생성하세요</div>
+					<div className="form__block">
+						<label htmlFor="email">이메일</label>
+						<input
+							type="text"
+							name="email"
+							id="email"
+							value={email}
+							required
+							autoComplete="off"
+							placeholder="이메일을 입력하세요."
+							onChange={onChange}
+						/>
+					</div>
+					<div className="form__block">
+						<label htmlFor="password">비밀번호</label>
+						<input
+							type="password"
+							name="password"
+							id="password"
+							value={password}
+							required
+							autoComplete="off"
+							placeholder="비밀번호를 입력하세요."
+							onChange={onChange}
+						/>
+					</div>
+					<div className="form__block">
+						<label htmlFor="password_confirm">비밀번호 확인</label>
+						<input
+							type="password"
+							name="password_confirm"
+							id="password_confirm"
+							value={passwordConfirm}
+							required
+							autoComplete="off"
+							placeholder="비밀번호 확인을 입력하세요."
+							onChange={onChange}
+						/>
+					</div>
+					{error && error?.length > 0 && (
+						<div className="form__block">
+							<div className="form__error">{error}</div>
+						</div>
+					)}
+					<div className="login-home__btns mt40">
+						<button
+							type="button"
+							name="google"
+							className="login-btn__google"
+							onClick={onClickSocialLogin}
+						>
+							<span>Google로 회원가입</span>
+						</button>
+						<button
+							type="button"
+							name="github"
+							className="login-btn__github"
+							onClick={onClickSocialLogin}
+						>
+							<span>Github로 회원가입</span>
+						</button>
+						<div className="btn_bar">
+							<span className="bar"></span>
+							<p>또는</p>
+							<span className="bar"></span>
+						</div>
+						<Link to="/users/login">
+							<button type="button" className="login-btn__signup">
+								로그인 하러 가기
+							</button>
+						</Link>
+					</div>
+					<div className="account-footer">
+						<div className="footer_btns right">
+							<button
+								type="submit"
+								className="btn_signup"
+							>
+								회원가입
+							</button>
+						</div>
+					</div>
+				</form>
 			</div>
-			<div className="form__block--lg">
-				<button
-					type="button"
-					name="google"
-					className="form__btn-google"
-					onClick={onClickSocialLogin}
-				>
-					구글로 회원가입
-				</button>
-			</div>
-			<div className="form__block--lg">
-				<button
-					type="button"
-					name="github"
-					className="form__btn-github"
-					onClick={onClickSocialLogin}
-				>
-					Github로 회원가입
-				</button>
-			</div>
-		</form>
+		</>
 	);
 }

@@ -1,5 +1,6 @@
-@import "assets/scss/reset";
-@import "assets/scss/variables";
+@use "assets/scss/reset";
+@use "assets/scss/attribute";
+@use "assets/scss/variables" as *;
 
 * {
   background-color: $backgroundColor;
@@ -26,10 +27,250 @@
   cursor: pointer;
 }
 
+.btn {
+  display: inline-block;
+  font-weight: 500;
+  height: 38px;
+  line-height: 38px;
+  text-align: center;
+
+  &-w100p {
+    width: 100%;
+  }
+
+  &-round {
+    border-radius: 400px;
+  }
+
+  &--black {
+    background-color: #222222;
+    color: #fff;
+  }
+
+  &--light {
+    background-color: #fafafa;
+    border: 1px solid $grayColor;
+    color: #222;
+  }
+}
+
 .post__flex {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+// Header
+.logo_header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 56px;
+  position: relative;
+
+  .logo {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+
+    img {
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  .btn_back {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: url(../images/icon/icon_back.svg) no-repeat center center / contain;
+  }
+}
+
+// Account
+.account-page {
+  width: 100%;
+  height: calc(100dvh - 56px);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  padding-bottom: 80px;
+
+  .account_title {
+    flex: 1;
+    display: flex;
+    align-items: center;
+
+    h2 {
+      line-height: 150%;
+    }
+  }
+
+  .login-home__btns {
+    display: flex;
+    flex-direction: column;
+    row-gap: 12px;
+    justify-content: center;
+    align-items: center;
+
+    a {
+      display: inline-block;
+      width: 100%;
+    }
+
+    .login-btn__google {
+      @extend .btn;
+      @extend .btn-w100p;
+      @extend .btn-round;
+      background-color: #fff;
+
+      span {
+        background-color: transparent;
+        color: #222;
+        position: relative;
+        padding-left: 30px;
+        font-weight: 500;
+
+        &:before {
+          content: '';
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          background: url(../images/icon/icon_google.svg) no-repeat center center / contain;
+        }
+      }
+    }
+
+    .login-btn__github {
+      @extend .btn;
+      @extend .btn-w100p;
+      @extend .btn-round;
+      background-color: #fff;
+
+      span {
+        background-color: transparent;
+        color: #222;
+        position: relative;
+        padding-left: 30px;
+        font-weight: 500;
+
+        &:before {
+          content: '';
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          background: url(../images/icon/icon_github.svg) no-repeat center center / contain;
+        }
+      }
+    }
+
+    .login-btn__signup {
+      @extend .btn;
+      @extend .btn-w100p;
+      @extend .btn-round;
+      @extend .btn--black;
+    }
+  }
+
+  .btn_bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    span.bar {
+      flex: 1;
+      width: 100%;
+      height: 1px;
+      background-color: $grayColor;
+    }
+
+    p {
+      font-size: 13px;
+    }
+  }
+
+  .login-home__txts {
+    margin-top: 28px;
+    font-size: 13px;
+    line-height: 150%;
+    .link {
+      color: $primaryColor;
+    }
+  }
+  .login-home__login {
+    margin-top: 40px;
+    .link {
+      margin-left: 8px;
+      color: $primaryColor;
+    }
+  }
+}
+
+// Account Footer
+.account-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  color: #fff;
+  width: 100%;
+  height: 56px;
+  max-width: 600px;
+  margin: 0 auto;
+  border: 1px solid $borderColor;
+  background-color: transparent;
+
+  .footer_btns {
+    width: 100%;
+    height: 100%;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+
+    &.right {
+      justify-content: flex-end;
+    }
+
+    &.between {
+      justify-content: space-between
+    }
+
+    .btn_prev {
+      @extend .btn;
+      @extend .btn-round;
+      border: 1px solid #fff;
+      background-color: transparent;
+      color: #fff;
+      padding: 0 12px;
+      height: 32px;
+      line-height: 32px;
+    }
+
+    .btn_signup {
+      @extend .btn;
+      @extend .btn-round;
+      @extend .btn--light;
+      padding: 0 12px;
+      height: 32px;
+      line-height: 32px;
+    }
+  }
 }
 
 // Footer
@@ -67,18 +308,20 @@
 
 // form 레이아웃
 .form {
-  margin: 0 auto;
-  max-width: 680px;
-  padding: 20px;
-  padding-top: 80px;
+  padding-top: 40px;
 
   input {
-    height: 56px;
+    height: 52px;
     padding: 10px;
     border-radius: 8px;
     border: 1px solid $grayColor;
     width: 100%;
     background-color: transparent;
+    transition: 0.35s;
+
+    &:focus {
+      border: 1px solid $primaryColor;
+    }
   }
 
   &__block {
@@ -92,26 +335,28 @@
   }
 
   &__title {
-    text-align: center;
-    font-size: 28px;
+    text-align: left;
+    font-size: 22px;
     font-weight: 600;
     margin-bottom: 80px;
   }
 
   label {
+    font-size: 13px;
     font-weight: 500;
     display: block;
-    margin-bottom: 10px;
+    padding-left: 8px;
+    margin-bottom: 8px;
     margin-top: 20px;
   }
 
   &__btn-submit {
     width: 100%;
-    height: 56px;
+    height: 48px;
     border-radius: 8px;
     background-color: $primaryColor;
     font-weight: 600;
-    font-size: 18px;
+    font-size: 15px;
     color: #fff;
     border-radius: 400px;
 
@@ -131,29 +376,9 @@
   }
 
   &__error {
-    color: $dangerColor;
-    font-size: 14px;
-  }
-
-  &__btn-google {
-    @extend .form__btn-submit;
-    background-color: #fff;
-    color: $activeColor;
-
-    &:hover, &:focus {
-      background-color: $activeColor;
-      color: #fff;
-    }
-  }
-
-  &__btn-github {
-    @extend .form__btn-submit;
-    background-color: #222;
-    color: #fff;
-
-    &:hover, &:focus {
-      background-color: #333;
-    }
+    // color: $dangerColor;
+    font-size: 13px;
+    margin-left: 8px;
   }
 }
 

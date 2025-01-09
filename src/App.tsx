@@ -27,7 +27,7 @@ function App() {
 	}, [auth])
 
   return (
-		<Layout>
+		<Layout isAuthenticated={isAuthenticated}>
 			<ToastContainer theme='dark' autoClose={1000} hideProgressBar newestOnTop/>
 			{init ? <Router isAuthenticated={isAuthenticated} /> : <Loader />}
 		</Layout>
