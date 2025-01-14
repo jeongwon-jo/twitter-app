@@ -15,61 +15,78 @@ export interface PostProps {
 }
 
 const posts: PostProps[] = [
-  {
-    id: '1',
-    email: 'test@test.com',
-    content: "테스트",
-    createdAt: "2023-05-23",
-    uid: "123123",
+	{
+		id: "1",
+		email: "test@test.com",
+		content: "테스트",
+		createdAt: "2023-05-23",
+		uid: "123123",
+	},
+	{
+		id: "2",
+		email: "test@test.com",
+		content: "테스트",
+		createdAt: "2023-05-23",
+		uid: "123123",
+	},
+	{
+		id: "3",
+		email: "test@test.com",
+		content: "테스트",
+		createdAt: "2023-05-23",
+		uid: "123123",
+	},
+	{
+		id: "4",
+		email: "test@test.com",
+		content: "테스트",
+		createdAt: "2023-05-23",
+		uid: "123123",
+	},
+	{
+		id: "5",
+		email: "test@test.com",
+		content: "테스트",
+		createdAt: "2023-05-23",
+		uid: "123123",
+	},
+	{
+		id: "4",
+		email: "test@test.com",
+		content: "테스트",
+		createdAt: "2023-05-23",
+		uid: "123123",
+	},
+	{
+		id: "5",
+		email: "test@test.com",
+		content: "테스트",
+		createdAt: "2023-05-23",
+		uid: "123123",
   },
-  {
-    id: '2',
-    email: 'test@test.com',
-    content: "테스트",
-    createdAt: "2023-05-23",
-    uid: "123123",
-  },
-  {
-    id: '3',
-    email: 'test@test.com',
-    content: "테스트",
-    createdAt: "2023-05-23",
-    uid: "123123",
-  },
-  {
-    id: '4',
-    email: 'test@test.com',
-    content: "테스트",
-    createdAt: "2023-05-23",
-    uid: "123123",
-  },
-  {
-    id: '5',
-    email: 'test@test.com',
-    content: "테스트",
-    createdAt: "2023-05-23",
-    uid: "123123",
-  },
-]
+  
+];
 
 export default function HomePage() {
   return (
-    <div className="home">
-      <div className="home__title">
-        <img src={logo} alt="로고" />
-      </div>
-      <div className="home__tabs">
-        <div className="home__tab home__tab--active">추천</div>
-        <div className="home__tab">팔로우 중</div>
-      </div>
-      {/* Post Form */}
-      <PostForm />
-      {/* Tweet Posts */}
-      <div className="post">
-        {posts?.map((post) => (
-          <PostBox post={post} key={post.id}/>
-        ))}
-      </div>
-    </div>
-  )
+		<div className="home">
+			<div className="home__top">
+				<div className="home__title">
+					<img src={logo} alt="로고" />
+				</div>
+				<div className="home__tabs">
+					<div className="home__tab home__tab--active">추천</div>
+					<div className="home__tab">팔로우 중</div>
+				</div>
+			</div>
+			{/* Post Form */}
+			<PostForm />
+			{/* Tweet Posts */}
+			<div className="post">
+				{posts?.map((post) => (
+					<PostBox post={post} key={post.id} />
+				))}
+			</div>
+		</div>
+	);
 }

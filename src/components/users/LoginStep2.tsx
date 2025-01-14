@@ -2,12 +2,12 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../assets/images/common/logo.png";
 
 interface LoginStep2Props {
-  error: string;
+	error: string;
 	email: string;
 	password: string;
-	onChange: any;
-	onSubmit: any;
-	setStep: any;
+	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+	setStep: (e: number) => void;
 }
 
 export default function LoginStep2({ error, email, password, onChange, onSubmit, setStep }: LoginStep2Props) {
@@ -38,6 +38,7 @@ export default function LoginStep2({ error, email, password, onChange, onSubmit,
 							id="email"
 							value={email}
 							required
+							readOnly
 							autoComplete="off"
 							onChange={onChange}
 						/>

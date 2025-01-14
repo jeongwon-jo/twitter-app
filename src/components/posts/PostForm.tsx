@@ -3,13 +3,22 @@ import { FiImage } from "react-icons/fi";
 export default function PostForm() {
   const handleFileUpload = () => { };
   
+	const onSubmit = () => {
+
+	}
+
+	const onChange = () => {
+
+	}
+	
   return (
-		<form action="" className="post-form">
+		<form action="" className="post-form" onSubmit={onSubmit}>
 			<textarea
 				name="content"
 				id="content"
 				className="post-form__textarea"
 				placeholder="무슨 일이 일어나고 있나요?"
+				onChange={onChange}
 			></textarea>
 			<div className="post-form__submit-area">
 				<label htmlFor="file-input" className="post-form__file">

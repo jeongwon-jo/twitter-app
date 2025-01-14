@@ -15,6 +15,7 @@
   min-height: 100dvh;
   border-left: 1px solid $borderColor;
   border-right: 1px solid $borderColor;
+  padding-bottom: 68px;
 }
 
 .button {
@@ -25,6 +26,19 @@
   line-height: 1.25rem;
   font-weight: 600;
   cursor: pointer;
+}
+
+.transparent {
+  background-color: transparent;
+  backdrop-filter: blur(10px);
+}
+
+.sticky {
+  width: 100%;
+  position: sticky;
+  max-width: 600px;
+  margin: 0 auto;
+  top: 0;
 }
 
 .btn {
@@ -384,7 +398,14 @@
 
 // Home 레이아웃
 .home {
+  &__top {
+    @extend .transparent;
+    @extend .sticky;
+  }
+
   &__title {
+    background-color: transparent;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -398,12 +419,14 @@
   }
 
   &__tabs {
+    background-color: transparent;
     width: 100%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
   }
 
   &__tab {
+    background-color: transparent;
     text-align: center;
     font-weight: 500;
     padding: 16px;
@@ -426,8 +449,8 @@
     width: 100%;
     border: none;
     display: block;
-    font-size: 16px;
-    padding: 12px;
+    font-size: 14px;
+    padding: 16px;
     resize: none;
     border-bottom: 1px solid $borderColor;
 
@@ -450,13 +473,14 @@
       justify-content: center;
       cursor: pointer;
 
-      // &-icon {
-      //   color: $activeColor;
+      &-icon {
+        font-size: 18px;
+        color: $activeColor;
 
-      //   &:hover {
-      //     color: $primaryColor;
-      //   }
-      // }
+        &:hover {
+          color: $primaryColor;
+        }
+      }
     }
     .hidden {
       display: none;
@@ -477,38 +501,34 @@
 
   &__flex {
     display: flex;
-    gap: 4px;
+    gap: 8px;
     align-items: center;
   }
 
   &__email, &__createdAt {
-    font-size: 12px;
+    font-size: 14px;
     color: $grayText;
   }
 
   &__box {
-    padding: 10px 0px;
+    padding: 16px;
     border-bottom: 1px solid $borderColor;
 
     &-profile {
-      padding: 0px 10px;
-
       &-img, &-icon {
-        width: 40px;
-        height: 40px;
+        width: 28px;
+        height: 28px;
         border-radius: 50px;
-        margin-right: 10px;
       }
     }
 
     &-content {
       display: block;
       font-weight: 500;
-      padding: 16px;
+      padding: 16px 0;
     }
 
     &-footer {
-      padding: 0 16px;
       margin-top: 10px;
       font-size: 14px;
       display: flex;

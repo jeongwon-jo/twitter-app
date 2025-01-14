@@ -4,8 +4,8 @@ import logo from "../../assets/images/common/logo.png";
 interface LoginStep1Props {
 	error: string;
 	email: string;
-	onChange: any;
-	setStep: any;
+	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	setStep: (e: number) => void;
 }
 
 export default function LoginStep1({ error, email, onChange, setStep }: LoginStep1Props) {
@@ -41,14 +41,21 @@ export default function LoginStep1({ error, email, onChange, setStep }: LoginSte
 							onChange={onChange}
 						/>
 					</div>
-					{error && error?.length > 0 && (
+					{error && email && error?.length > 0 && (
 						<div className="form__block">
 							<div className="form__error">{error}</div>
 						</div>
 					)}
 					<div className="account-footer">
 						<div className="footer_btns right">
-							<button type="button" className="btn_signup" onClick={() => { setStep(2) }} disabled={error.length > 0}>
+							<button
+								type="button"
+								className="btn_signup"
+								onClick={() => {
+									setStep(2);
+								}}
+								disabled={error.length > 0}
+							>
 								다음
 							</button>
 						</div>
