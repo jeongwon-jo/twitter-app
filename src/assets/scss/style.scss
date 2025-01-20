@@ -497,6 +497,16 @@
 
 // Home의 Post Layout
 .post {
+  &__no-posts {
+    padding: 16px;
+    text-align: center;
+
+    .post__text {
+      padding-top: 16px;
+      color: $grayColor;
+    }
+  }
+
   padding-bottom: 40px;
 
   &__flex {
