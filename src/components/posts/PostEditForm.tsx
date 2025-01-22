@@ -1,10 +1,14 @@
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "firebaseApp";
+import { db, storage } from "firebaseApp";
 import { PostProps } from "pages/home";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { FiImage } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { IoIosClose } from "react-icons/io";
+import { deleteObject, getDownloadURL, ref, uploadString } from "firebase/storage";
+import { v4 as uuidv4 } from "uuid";
+import AuthContext from "context/AuthContext";
 
 export default function PostEditForm() {
   const params = useParams()
@@ -12,7 +16,31 @@ export default function PostEditForm() {
 	const [content, setContent] = useState<string>("");
 	const [tags, setTags] = useState<string[]>([]);
 	const [hashTag, setHashTag] = useState<string>("");
-	const handleFileUpload = () => {};
+	const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+	const [imageFile, setImageFile] = useState<string | null>(null);
+	const { user } = useContext(AuthContext);
+	
+	const handleFileUpload = (e: any) => {
+		const {
+			target: { files },
+		} = e;
+
+		const file = files?.[0];
+		// 파일 리더 선언
+		const fileReader = new FileReader();
+		// 리더가 파일을 읽음
+		fileReader?.readAsDataURL(file);
+		fileReader.onloadend = (e: any) => {
+			// 구조분해할당
+			const { result } = e?.currentTarget;
+			setImageFile(result);
+		};
+	};
+
+	const handleDeleteImage = () => {
+		setImageFile(null);
+	};
+
 	const navigate = useNavigate();
 
 	const handleKeyUp = (e: any) => {
@@ -44,18 +72,40 @@ export default function PostEditForm() {
       setPost({ ...(docSnap?.data() as PostProps), id: docSnap.id })
 			setContent(docSnap?.data()?.content)
 			setTags(docSnap?.data()?.hashTags)
+			setImageFile(docSnap?.data()?.imageUrl)
     }
   }, [params.id])
   
 	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		setIsSubmitting(true);
+		// 이미지 이름 만들기
+		const key = `${user?.uid}/${uuidv4()}`;
+		// firestore 참조 걸기
+		const storageRef = ref(storage, key);
 		e.preventDefault();
+		
 
-    try {
-      if (post) {
-        const postRef = doc(db, "posts", post?.id)
-        await updateDoc(postRef, {
+		try {
+			if (post) {
+				// 기존사진 지우고 새로운 사진 업로드
+				if (post?.imageUrl) {
+					let imageRef = ref(storage, post?.imageUrl);
+					await deleteObject(imageRef).catch((error) => {
+						console.log(error);
+					});
+				}
+
+				let imageUrl = "";
+				if (imageFile) {
+					const data = await uploadString(storageRef, imageFile, "data_url");
+					imageUrl = await getDownloadURL(data?.ref);
+				}
+
+				const postRef = doc(db, "posts", post?.id);
+				await updateDoc(postRef, {
 					content: content,
 					hashTags: tags,
+					imageUrl: imageUrl,
 					updatedAt: new Date()?.toLocaleDateString("ko", {
 						hour: "2-digit",
 						minute: "2-digit",
@@ -63,9 +113,11 @@ export default function PostEditForm() {
 					}),
 				});
 
-        toast.success("게시글을 수정했습니다.");
+				toast.success("게시글을 수정했습니다.");
+				setIsSubmitting(false);
+				setImageFile(null);
 				navigate(`/posts/${post.id}`);
-      }
+			}
 		} catch (e: any) {
 			console.log(e);
 		}
@@ -89,26 +141,44 @@ export default function PostEditForm() {
   
 	return (
 		<form action="" className="post-form" onSubmit={onSubmit}>
-			<textarea
-				name="content"
-				id="content"
-				className="post-form__textarea"
-				placeholder="무슨 일이 일어나고 있나요?"
-				onChange={onChange}
-				value={content}
-			></textarea>
+			<div className="post-form__input-area">
+				<textarea
+					name="content"
+					id="content"
+					className="post-form__textarea"
+					placeholder="무슨 일이 일어나고 있나요?"
+					onChange={onChange}
+					value={content}
+				></textarea>
+				{imageFile && (
+					<div className="post-form__attach-area">
+						<div className="attachment_img">
+							<img src={imageFile} alt="이미지파일" />
+							<button
+								type="button"
+								className="btn_clear"
+								onClick={handleDeleteImage}
+							>
+								<IoIosClose />
+							</button>
+						</div>
+					</div>
+				)}
+			</div>
 			<div className="post-form__hashtags">
-				<div className="post-form__hashtags-outputs">
-					{tags?.map((tag, index) => (
-						<span
-							className="post-form__hashtags-tag"
-							key={index}
-							onClick={() => removeTag(tag)}
-						>
-							#{tag}
-						</span>
-					))}
-				</div>
+				{tags.length > 0 && (
+					<div className="post-form__hashtags-outputs">
+						{tags?.map((tag, index) => (
+							<span
+								className="post-form__hashtags-tag"
+								key={index}
+								onClick={() => removeTag(tag)}
+							>
+								#{tag}
+							</span>
+						))}
+					</div>
+				)}
 				<input
 					type="text"
 					className="post-form__input"
@@ -121,20 +191,24 @@ export default function PostEditForm() {
 				/>
 			</div>
 			<div className="post-form__submit-area">
-				<label htmlFor="file-input" className="post-form__file">
-					<FiImage className="post-form__file-icon" />
-				</label>
-				<input
-					type="file"
-					name="file-input"
-					accept="image/*"
-					onChange={handleFileUpload}
-					className="hidden"
-				/>
+				<div className="post-form__image-area">
+					<label htmlFor="file-input" className="post-form__file">
+						<FiImage className="post-form__file-icon" />
+					</label>
+					<input
+						type="file"
+						name="file-input"
+						accept="image/*"
+						id="file-input"
+						onChange={handleFileUpload}
+						className="hidden"
+					/>
+				</div>
 				<input
 					type="submit"
 					value="게시하기"
 					className="post-form__submit-btn"
+					disabled={isSubmitting}
 				/>
 			</div>
 		</form>
