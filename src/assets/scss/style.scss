@@ -441,6 +441,26 @@
       background-color: $activeBackgroundColor;
     }
   }
+
+  &__search-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__search {
+    width: calc(100% - 40px);
+    border: none;
+    height: 40px;
+    padding: 0 16px;
+    background-color: $borderColor;
+    border-radius: 400px;
+    border: 1px solid transparent;
+
+    &:focus {
+      border: 1px solid $primaryColor;
+    }
+  }
 }
 
 .post-form {
@@ -456,6 +476,37 @@
 
     &::placeholder {
       color: $grayText;
+    }
+  }
+
+  &__input {
+    // padding: 8px;
+    padding-top: 8px;
+    width: 100%;
+    border: none;
+    resize: none;
+    margin-top: 8px;
+  }
+
+  &__hashtags {
+    padding: 16px;
+    border-bottom: 1px solid $borderColor;
+
+    &-outputs {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px 8px;
+    }
+
+    &-tag {
+      color: $primaryColor;
+      padding: 2px 0px;
+      cursor: pointer;
+
+      &:hover, &:focus {
+        color: $activeColor;
+      }
     }
   }
 

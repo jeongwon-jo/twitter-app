@@ -3,6 +3,7 @@ import { GoHomeFill } from "react-icons/go";
 import { IoPerson } from "react-icons/io5";
 import { FiLogOut } from "react-icons/fi";
 import { getAuth, signOut } from "firebase/auth";
+import { IoSearch } from "react-icons/io5";
 import { app } from "firebaseApp";
 import { toast } from "react-toastify";
 
@@ -25,6 +26,9 @@ export default function MenuList() {
 			<div className="footer__grid">
 				<button type="button" onClick={() => navigate("/")}>
 					<GoHomeFill />
+				</button>
+				<button type="button" onClick={() => navigate("/search")}>
+					<IoSearch />
 				</button>
 				<button type="button" onClick={() => navigate("/profile")}>
 					<IoPerson />
