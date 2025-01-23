@@ -1,10 +1,10 @@
-import logo from "../../assets/images/common/logo.png"
 import PostForm from "components/posts/PostForm";
 import PostBox from "components/posts/PostBox";
 import { useContext, useEffect, useState } from "react";
 import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
 import AuthContext from "context/AuthContext";
 import { db } from "firebaseApp";
+import { LogoHeader } from "components/LogoHeader";
 
 export interface PostProps {
   id: string;
@@ -41,25 +41,26 @@ export default function HomePage() {
 
   return (
 		<div className="home">
-			<div className="home__top">
-				<div className="home__title">
-					<img src={logo} alt="로고" />
+			<LogoHeader />
+			<div className="container">
+				<div className="home__top">
+					<div className="home__tabs">
+						<div className="home__tab home__tab--active">추천</div>
+						<div className="home__tab">팔로우 중</div>
+					</div>
 				</div>
-				<div className="home__tabs">
-					<div className="home__tab home__tab--active">추천</div>
-					<div className="home__tab">팔로우 중</div>
+				{/* Post Form */}
+				<PostForm />
+				{/* Tweet Posts */}
+				<div className="post">
+					{posts?.length > 0 ? (
+						posts?.map((post) => <PostBox post={post} key={post.id} />)
+					) : (
+						<div className="post__no-posts">
+							<div className="post__text">게시글이 없습니다.</div>
+						</div>
+					)}
 				</div>
-			</div>
-			{/* Post Form */}
-			<PostForm />
-			{/* Tweet Posts */}
-			<div className="post">
-				{posts?.length > 0 ? posts?.map((post) => (
-					<PostBox post={post} key={post.id} />
-				)) :
-					<div className="post__no-posts">
-					<div className="post__text">게시글이 없습니다.</div>
-				</div>}
 			</div>
 		</div>
 	);

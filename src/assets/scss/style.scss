@@ -28,19 +28,6 @@
   cursor: pointer;
 }
 
-.transparent {
-  background-color: transparent;
-  backdrop-filter: blur(10px);
-}
-
-.sticky {
-  width: 100%;
-  position: sticky;
-  max-width: 600px;
-  margin: 0 auto;
-  top: 0;
-}
-
 .btn {
   display: inline-block;
   font-weight: 500;
@@ -76,11 +63,16 @@
 
 // Header
 .logo_header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 56px;
-  position: relative;
+  background-color: #000;
+  z-index: 100;
 
   .logo {
     display: inline-block;
@@ -105,6 +97,10 @@
     transform: translateY(-50%);
     background: url(../images/icon/icon_back.svg) no-repeat center center / contain;
   }
+}
+
+.container {
+  padding-top: 56px;
 }
 
 // Account
@@ -390,7 +386,6 @@
   }
 
   &__error {
-    // color: $dangerColor;
     font-size: 13px;
     margin-left: 8px;
   }
@@ -398,26 +393,6 @@
 
 // Home 레이아웃
 .home {
-  &__top {
-    @extend .transparent;
-    @extend .sticky;
-  }
-
-  &__title {
-    background-color: transparent;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 12px;
-    margin-bottom: 12px;
-
-    img {
-      width: 30px;
-      height: 30px;
-    }
-  }
-
   &__tabs {
     background-color: transparent;
     width: 100%;
@@ -463,130 +438,6 @@
   }
 }
 
-.post-form {
-  &__input-area {
-    border-bottom: 1px solid $borderColor;
-  }
-
-  &__attach-area {
-    padding: 16px;
-
-    .attachment_img {
-      width: 100%;
-      max-width: 260px;
-      height: auto;
-      position: relative;
-      padding: 16px;
-
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        border-radius: 8px;
-      }
-
-      .btn_clear {
-        padding: 0;
-        overflow: hidden;
-        position: absolute;
-        top: -8px;
-        right: -16px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 20px;
-        height: 20px;
-        font-size: 24px;
-        border-radius: 50%;
-        z-index: 10;
-        border: 1px solid #fff;
-      }
-    }
-  }
-
-  &__textarea {
-    min-height: 60px;
-    width: 100%;
-    border: none;
-    display: block;
-    font-size: 14px;
-    padding: 16px;
-    resize: none;
-
-    &::placeholder {
-      color: $grayText;
-    }
-  }
-
-  &__input {
-    width: 100%;
-    border: none;
-    resize: none;
-  }
-
-  &__hashtags {
-    padding: 16px;
-    border-bottom: 1px solid $borderColor;
-
-    &-outputs {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 4px 8px;
-      margin-bottom: 16px;
-    }
-
-    &-tag {
-      color: $primaryColor;
-      padding: 2px 0px;
-      cursor: pointer;
-
-      &:hover, &:focus {
-        color: $activeColor;
-      }
-    }
-  }
-
-  &__image-area {
-    display: flex;
-    align-items: center;
-  }
-
-  &__submit-area {
-    display: flex;
-    padding: 12px;
-    justify-content: space-between;
-    border-bottom: 1px solid $borderColor;
-
-    .post-form__file {
-      display: flex;
-      padding: 0 8px;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-
-      &-icon {
-        font-size: 18px;
-        color: $activeColor;
-
-        &:hover {
-          color: $primaryColor;
-        }
-      }
-    }
-    .hidden {
-      display: none;
-    }
-  }
-
-  &__submit-btn {
-    @extend .button;
-    padding: 10px 18px;
-    font-size: 14px;
-    background-color: $grayColor;
-  }
-}
 
 // Home의 Post Layout
 .post {
@@ -700,6 +551,286 @@
       }
     }
   }
-  
-  
+}
+
+.post-form {
+  &__input-area {
+    border-bottom: 1px solid $borderColor;
+  }
+
+  &__attach-area {
+    padding: 16px;
+
+    .attachment_img {
+      width: 100%;
+      max-width: 260px;
+      height: auto;
+      position: relative;
+      padding: 16px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 8px;
+      }
+
+      .btn_clear {
+        padding: 0;
+        overflow: hidden;
+        position: absolute;
+        top: -8px;
+        right: -16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 20px;
+        height: 20px;
+        font-size: 24px;
+        border-radius: 50%;
+        z-index: 10;
+        border: 1px solid #fff;
+      }
+    }
+  }
+
+  &__textarea {
+    min-height: 100px;
+    width: 100%;
+    border: none;
+    display: block;
+    font-size: 14px;
+    padding: 16px;
+    resize: none;
+
+    &::placeholder {
+      color: $grayText;
+    }
+  }
+
+  &__input {
+    width: 100%;
+    border: none;
+    resize: none;
+  }
+
+  &__hashtags {
+    padding: 16px;
+    border-bottom: 1px solid $borderColor;
+
+    &-outputs {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px 8px;
+      margin-bottom: 16px;
+    }
+
+    &-tag {
+      color: $primaryColor;
+      padding: 2px 0px;
+      cursor: pointer;
+
+      &:hover, &:focus {
+        color: $activeColor;
+      }
+    }
+  }
+
+  &__image-area {
+    display: flex;
+    align-items: center;
+  }
+
+  &__submit-area {
+    display: flex;
+    padding: 12px;
+    justify-content: space-between;
+    border-bottom: 1px solid $borderColor;
+
+    .post-form__file {
+      display: flex;
+      padding: 0 8px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+
+      &-icon {
+        font-size: 18px;
+        color: $activeColor;
+
+        &:hover {
+          color: $primaryColor;
+        }
+      }
+    }
+    .hidden {
+      display: none;
+    }
+  }
+
+  &__submit-btn {
+    @extend .button;
+    padding: 10px 18px;
+    font-size: 14px;
+    background-color: $grayColor;
+  }
+}
+
+// #### Profile ####
+.profile {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 16px;
+
+  .profile__img {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid $borderColor;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .profile__btn {
+    display: inline-block;
+    width: auto;
+    height: 30px;
+    border-radius: 50px;
+    padding: 0 16px;
+    border: 1px solid $borderColor;
+  }
+}
+
+.profile__text {
+  padding: 0 16px;
+  margin-bottom: 12px;
+
+  .profile__name {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .profile__email {
+    font-size: 14px;
+    font-weight: 400;
+    color: $grayColor;
+  }
+}
+
+.profile-edit_form {
+  padding: 0 16px;
+
+  .edit__profile-area {
+    display: inline-block;
+    position: relative;
+
+    .profile__file {
+      display: inline-block;
+      width: 80px;
+      height: 80px;
+      position: relative;
+      border-radius: 50%;
+
+      .attachment_img {
+        width: 100%;
+        height: 100%;
+
+        .img_wrap {
+          display: inline-block;
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          overflow: hidden;
+          border: 1px solid $borderColor;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+      }
+
+      .empty_profile_img {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        font-size: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+    }
+
+    .btn_clear {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      overflow: hidden;
+      position: absolute;
+      right: -7px;
+      top: 0px;
+      border: 1px solid #fff;
+      z-index: 100;
+      font-size: 24px;
+      padding: 0;
+
+      svg {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    input[type=file] {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+  }
+
+  .profile-info__list-area {
+    margin-top: 24px;
+
+    .profile-info__item {
+      label {
+        display: block;
+        font-size: 12px;
+        margin-bottom: 4px;
+      }
+
+      .profile-img__input {
+        width: 100%;
+        height: 36px;
+        border: none;
+        border-bottom: 1px solid $borderColor;
+      }
+    }
+  }
+
+  .profile__submit-area {
+    margin-top: 20px;
+
+    .profile__submit-btn {
+      width: 100%;
+      height: 38px;
+      border: none;
+      background-color: $grayColor;
+      border-radius: 8px;
+      color: #fff;
+    }
+  }
 }

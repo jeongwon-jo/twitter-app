@@ -5,6 +5,7 @@ import { PostProps } from "pages/home";
 import { collection, onSnapshot, orderBy, query, where } from "firebase/firestore";  
 import AuthContext from "context/AuthContext";
 import { db } from "firebaseApp";
+import { LogoHeader } from "components/LogoHeader";
 
 export default function SearchPage() {
   const [posts, setPosts] = useState<PostProps[]>([]);
@@ -32,23 +33,28 @@ export default function SearchPage() {
 
 	return (
 		<div className="home">
-			<div className="home__top">
-				<div className="home__title">
-					<img src={logo} alt="로고" />
+			<LogoHeader />
+			<div className="container">
+				<div className="home__search-div">
+					<input
+						type="text"
+						className="home__search"
+						placeholder="해시태그 검색"
+						value={tagQuery}
+						onChange={onChange}
+					></input>
 				</div>
-      </div>
-      <div className="home__search-div">
-        <input type="text" className="home__search" placeholder="해시태그 검색" value={tagQuery} onChange={onChange}></input>
-      </div>
-      {/* Tweet Posts */}
-      <div className="post">
-        {posts?.length > 0 ? posts?.map((post) => (
-          <PostBox post={post} key={post.id} />
-        )) :
-          <div className="post__no-posts">
-          <div className="post__text">검색어를 입력하세요.</div>
-        </div>}
-      </div>
+				{/* Tweet Posts */}
+				<div className="post">
+					{posts?.length > 0 ? (
+						posts?.map((post) => <PostBox post={post} key={post.id} />)
+					) : (
+						<div className="post__no-posts">
+							<div className="post__text">검색어를 입력하세요.</div>
+						</div>
+					)}
+				</div>
+			</div>
 		</div>
 	);
 }

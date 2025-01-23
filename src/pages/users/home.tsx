@@ -10,33 +10,35 @@ import { app } from "firebaseApp";
 import { toast } from "react-toastify";
 
 export default function LoginHomePage() {
-  const onClickSocialLogin = async (e: any) => {
-    const { target: { name } } = e;
-    
+	const onClickSocialLogin = async (e: any) => {
+		if (e.target.tagName.toLowerCase() === "span") {
+			e.currentTarget.click();
+			return false;
+		}
+
+		const { target: { name } } = e;
     let provider;
     const auth = getAuth(app);
     
-    if (name) {
-      if (name === "google") {
-				provider = new GoogleAuthProvider();
-			}
+    if (name === "google") {
+			provider = new GoogleAuthProvider();
+		}
 
-			if (name === "github") {
-				provider = new GithubAuthProvider();
-			}
+		if (name === "github") {
+			provider = new GithubAuthProvider();
+		}
 
-			await signInWithPopup(
-				auth,
-				provider as GoogleAuthProvider | GithubAuthProvider
-			)
-				.then((result) => {
-					toast.success("로그인 되었습니다.");
-				})
-				.catch((error) => {
-					const errorMessage = error.message;
-					toast.error(errorMessage);
-				});
-    }
+		await signInWithPopup(
+			auth,
+			provider as GoogleAuthProvider | GithubAuthProvider
+		)
+			.then((result) => {
+				toast.success("로그인 되었습니다.");
+			})
+			.catch((error) => {
+				const errorMessage = error.message;
+				toast.error(errorMessage);
+			});
   }
 
 	return (
