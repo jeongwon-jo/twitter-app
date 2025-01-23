@@ -40,9 +40,11 @@ export default function PostDetailPage() {
 					<img src={logo} alt="로고" />
 				</div>
 			</div>
-      <div className="post">
-        {post ? <PostBox post={post} /> : <Loader />}
-      </div>
+			<div className="container">
+				<div className="post">
+					{post ? <PostBox post={post} /> : <Loader />}
+				</div>
+			</div>
 		</>
 	);
 }

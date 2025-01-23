@@ -19,7 +19,9 @@ export default function PostEditPage() {
 					<img src={logo} alt="로고" />
 				</div>
 			</div>
-			<PostEditForm />
+			<div className="container">
+				<PostEditForm />
+			</div>
 		</>
 	);
 }

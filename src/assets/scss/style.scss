@@ -65,8 +65,11 @@
 .logo_header {
   position: fixed;
   top: 0;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 100%;
+  max-width: 598px;
+  margin: 0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -543,9 +546,26 @@
 
         &.post__likes, &.post__comments {
           @extend .post__flex;
+          line-height: 10px;
+
+          svg {
+            font-size: 18px;
+          }
+
+          .fill_heart {
+            path {
+              color: #FB2863;
+            }
+          }
 
           &:hover , &:focus {
             color: $grayText
+          }
+        }
+
+        &.post__comments {
+          svg {
+            font-size: 14px;
           }
         }
       }

@@ -1,9 +1,9 @@
 import AuthContext from "context/AuthContext";
-import { deleteDoc, doc } from "firebase/firestore";
+import { arrayRemove, arrayUnion, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "firebaseApp";
 import { PostProps } from "pages/home";
 import { useContext } from "react";
-import { AiFillHeart } from "react-icons/ai";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { FaRegComment, FaUserCircle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -34,6 +34,37 @@ export default function PostBox({ post }: PostBoxProps) {
 			navigate("/")
 		}
 	};
+
+	const toggleLike = async () => {
+		const postRef = doc(db, "posts", post.id)
+
+		if (user?.uid) {
+			// 사용자가 좋아요를 미리 한 경우 좋아요 취소
+			if (post?.likes?.includes(user?.uid)) {
+				await updateDoc(postRef, {
+					likes: arrayRemove(user.uid),
+					likeCount: post.likeCount ? post?.likeCount - 1 : 0,
+					updatedAt: new Date()?.toLocaleDateString("ko", {
+						hour: "2-digit",
+						minute: "2-digit",
+						second: "2-digit",
+					}),
+				});
+			}
+			// 사용자가 좋아요 하지않은 경우 좋아요 추가
+			else {
+				await updateDoc(postRef, {
+					likes: arrayUnion(user.uid),
+					likeCount: post.likeCount ? post?.likeCount + 1 : 1,
+					updatedAt: new Date()?.toLocaleDateString("ko", {
+						hour: "2-digit",
+						minute: "2-digit",
+						second: "2-digit",
+					}),
+				});
+			}
+		}
+	}
 	
 	return (
 		<div className="post__box" key={post?.id}>
@@ -84,8 +115,13 @@ export default function PostBox({ post }: PostBoxProps) {
 						</button>
 					</>
 				)}
-				<button type="button" className="post__likes">
-					<AiFillHeart />
+				<button type="button" className="post__likes" onClick={toggleLike}>
+					{user && post.likes?.includes(user?.uid) ? (
+						<AiFillHeart className="fill_heart"/>
+					) : (
+						<AiOutlineHeart />
+					)}
+
 					{post?.likeCount || 0}
 				</button>
 				<button type="button" className="post__comments">
