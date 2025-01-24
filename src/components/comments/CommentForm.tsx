@@ -13,9 +13,7 @@ export interface CommentFormProps {
 export function CommentForm({ post }: CommentFormProps) {
   const [comment, setComment] = useState<string>("")
   const { user } = useContext(AuthContext);
-  
-  console.log(user);
-  
+
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
