@@ -1,31 +1,23 @@
 import Loader from "components/loader/Loader";
 import logo from "../../assets/images/common/logo.png";
 import PostBox from "components/posts/PostBox";
-import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { db } from "firebaseApp";
 import { PostProps } from "pages/home";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { CommentForm } from "components/comments/CommentForm";
-import CommentBox, { CommentProps } from "components/comments/CommentBox";
 
 export default function PostDetailPage() {
   const params = useParams();
-	const [post, setPost] = useState<PostProps | null>(null);
+  const [post, setPost] = useState<PostProps | null>(null);
   const navigate = useNavigate();
 
   const getPost = useCallback(async () => {
     if (params.id) {
-			const docRef = doc(db, "posts", params.id);
-			// 전
-			// const docSnap = await getDoc(docRef);
-			// setPost({ ...(docSnap?.data() as PostProps), id: docSnap.id });
-			
-			// 후
-			onSnapshot(docRef, (doc) => {
-				setPost({ ...(doc?.data() as PostProps), id: doc.id });
-			});
-		}
+      const docRef = doc(db, "posts", params.id)
+      const docSnap = await getDoc(docRef);
+      setPost({ ...(docSnap?.data() as PostProps), id: docSnap.id })
+    }
   }, [params.id])
   
   useEffect(() => {
@@ -49,16 +41,9 @@ export default function PostDetailPage() {
 				</div>
 			</div>
 			<div className="container">
-			{post ?
 				<div className="post">
-						<PostBox post={post} />
-						<CommentForm post={post} />
-						{post?.comments?.slice(0)?.reverse()?.map((data: CommentProps) => (
-							<CommentBox data={data} post={ post} />
-						))}
-						
+					{post ? <PostBox post={post} /> : <Loader />}
 				</div>
-					: <Loader />}
 			</div>
 		</>
 	);
