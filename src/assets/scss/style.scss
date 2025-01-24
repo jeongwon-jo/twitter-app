@@ -854,3 +854,66 @@
     }
   }
 }
+
+.comment {
+  padding: 16px;
+  .comment__border-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+
+    .comment__profile {
+      .comment__box-profile-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+      }
+    }
+
+    .comment__box {
+      flex: 1;
+    }
+
+    .comment__flex-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .comment__email,
+      .comment__createdAt {
+        color: $grayColor;
+        font-size: 14px;
+      }
+    }
+
+    .comment__content {
+      margin: 12px 0;
+    }
+
+    .comment__btns {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+
+      button {
+        @extend .button;
+        &.comment__delete-btn {
+          background-color: $dangerColor;
+        
+          &:hover,  &:focus {
+            background-color: $dangerHoverColor;
+          }
+        }
+
+        &.comment__edit-btn {
+          background-color: $grayColor;
+
+          &:hover,  &:focus {
+            background-color: $grayHoverColor;
+          }
+        }
+
+      }
+    }
+  } 
+}
