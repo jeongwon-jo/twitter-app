@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { storage } from "firebaseApp";
 import { ref, deleteObject } from "firebase/storage";
+import FollowingBox from "components/following/FollowingBox";
 
 interface PostBoxProps {
   post: PostProps;
@@ -68,7 +69,7 @@ export default function PostBox({ post }: PostBoxProps) {
 	
 	return (
 		<div className="post__box" key={post?.id}>
-			<Link to={`/posts/${post?.id}`} className="post__box-item">
+			<div className="post__box-item">
 				<div className="post__box-profile">
 					{post?.profileUrl ? (
 						<img
@@ -82,24 +83,29 @@ export default function PostBox({ post }: PostBoxProps) {
 				</div>
 				<div className="post__box-content">
 					<div className="post-profile__info">
-						<div className="post__email">{post?.email}</div>
-						<div className="post__createdAt">{post?.createdAt}</div>
-					</div>
-					{post?.content}
-					{post?.imageUrl && (
-						<div className="post__box-image">
-							<img src={post?.imageUrl} alt="게시물 이미지" />
+						<div className="post-flex">
+							<div className="post__email">{post?.email}</div>
+							<div className="post__createdAt">{post?.createdAt}</div>
 						</div>
-					)}
-					<div className="post-form__hashtags-outputs">
-						{post?.hashTags?.map((tag, index) => (
-							<span className="post-form__hashtags-tag" key={index}>
-								#{tag}
-							</span>
-						))}
+						<FollowingBox post={ post} />
 					</div>
+					<Link to={`/posts/${post?.id}`}>
+						{post?.content}
+						{post?.imageUrl && (
+							<div className="post__box-image">
+								<img src={post?.imageUrl} alt="게시물 이미지" />
+							</div>
+						)}
+						<div className="post-form__hashtags-outputs">
+							{post?.hashTags?.map((tag, index) => (
+								<span className="post-form__hashtags-tag" key={index}>
+									#{tag}
+								</span>
+							))}
+						</div>
+					</Link>
 				</div>
-			</Link>
+			</div>
 			<div className="post__box-footer">
 				{user?.uid === post?.uid && (
 					<>
@@ -117,7 +123,7 @@ export default function PostBox({ post }: PostBoxProps) {
 				)}
 				<button type="button" className="post__likes" onClick={toggleLike}>
 					{user && post.likes?.includes(user?.uid) ? (
-						<AiFillHeart className="fill_heart"/>
+						<AiFillHeart className="fill_heart" />
 					) : (
 						<AiOutlineHeart />
 					)}

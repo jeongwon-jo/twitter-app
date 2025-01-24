@@ -486,6 +486,7 @@
     }
 
     &-content {
+      flex: 1;
       display: block;
       font-weight: 500;
 
@@ -512,10 +513,37 @@
 
     .post-profile__info {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 8px;
       margin-bottom: 12px;
       margin-top: 2px;
+
+      .post-flex {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .post__follower-btn {
+        display: inline-block;
+        width: auto;
+        height: 26px;
+        border-radius: 50px;
+        padding: 0 16px;
+        background-color: #000;
+        color: #fff;
+        border: 1px solid #fff;
+      }
+
+      .post__follow-btn {
+        display: inline-block;
+        width: auto;
+        height: 26px;
+        border-radius: 50px;
+        padding: 0 16px;
+        background-color: #fff;
+        color: #000;
+      }
     }
 
     &-footer {

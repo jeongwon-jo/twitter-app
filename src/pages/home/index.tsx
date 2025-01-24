@@ -1,7 +1,7 @@
 import PostForm from "components/posts/PostForm";
 import PostBox from "components/posts/PostBox";
-import { useContext, useEffect, useState } from "react";
-import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { collection, query, onSnapshot, orderBy, doc, where } from "firebase/firestore";
 import AuthContext from "context/AuthContext";
 import { db } from "firebaseApp";
 import { LogoHeader } from "components/LogoHeader";
@@ -20,24 +20,57 @@ export interface PostProps {
 	imageUrl?: string;
 }
 
+interface UserProps {
+	id: string;
+}
+
+type tabType = "all" | "following"
+
 export default function HomePage() {
-	const [posts, setPosts] = useState<PostProps[]>([]);
+	const [allposts, setAllPosts] = useState<PostProps[]>([]);
+	const [followingposts, setFollowingPosts] = useState<PostProps[]>([]);
+	const [followingIds, setFollowingIds] = useState<string[]>([""]);
+	const [activeTab, setActiveTab] = useState<string>("all")
 	const { user } = useContext(AuthContext);
+
+	// 실시간 동기화로 user의 팔로잉 id배열 가져오기
+	const getFollowingIds = useCallback(async () => {
+		if (user?.uid) {
+			const ref = doc(db, "following", user.uid)
+			onSnapshot(ref, (doc) => {
+				setFollowingIds([])
+				doc?.data()?.users?.map((user: UserProps) => setFollowingIds((prev: string[]) => prev ? [...prev, user.id] : []))
+			} );
+		}
+	}, [user?.uid])
 
 	useEffect(() => {
 		if (user) {
 			let postsRef = collection(db, "posts");
 			let postsQuery = query(postsRef, orderBy("createdAt", "desc"));
+			let followingPostsQuery = query(postsRef, where("uid", "in", followingIds), orderBy("createdAt", "desc"));
 
 			onSnapshot(postsQuery, (snapShot) => {
 				let dataObj = snapShot.docs.map((doc) => ({
 					...doc.data(),
 					id: doc?.id,
 				}));
-				setPosts(dataObj as PostProps[]);
+				setAllPosts(dataObj as PostProps[]);
+			});
+
+			onSnapshot(followingPostsQuery, (snapShot) => {
+				let dataObj = snapShot.docs.map((doc) => ({
+					...doc.data(),
+					id: doc?.id,
+				}));
+				setFollowingPosts(dataObj as PostProps[]);
 			});
 		}
-	}, [user]);
+	}, [followingIds, user]);
+
+	useEffect(() => {
+		if(user?.uid) getFollowingIds();
+	}, [user?.uid, getFollowingIds]);
 
   return (
 		<div className="home">
@@ -45,22 +78,52 @@ export default function HomePage() {
 			<div className="container">
 				<div className="home__top">
 					<div className="home__tabs">
-						<div className="home__tab home__tab--active">추천</div>
-						<div className="home__tab">팔로우 중</div>
+						<div
+							className={`home__tab ${
+								activeTab === "all" && "home__tab--active"
+							}`}
+							onClick={() => setActiveTab("all")}
+						>
+							전체
+						</div>
+						<div
+							className={`home__tab ${
+								activeTab === "following" && "home__tab--active"
+							}`}
+							onClick={() => setActiveTab("following")}
+						>
+							팔로우 중
+						</div>
 					</div>
 				</div>
 				{/* Post Form */}
 				<PostForm />
 				{/* Tweet Posts */}
-				<div className="post">
-					{posts?.length > 0 ? (
-						posts?.map((post) => <PostBox post={post} key={post.id} />)
-					) : (
-						<div className="post__no-posts">
-							<div className="post__text">게시글이 없습니다.</div>
-						</div>
-					)}
-				</div>
+				{activeTab === "all" && (
+					<div className="post">
+						{allposts?.length > 0 ? (
+							allposts?.map((post) => <PostBox post={post} key={post.id} />)
+						) : (
+							<div className="post__no-posts">
+								<div className="post__text">게시글이 없습니다.</div>
+							</div>
+						)}
+					</div>
+				)}
+
+				{activeTab === "following" && (
+					<div className="post">
+						{followingposts?.length > 0 ? (
+							followingposts?.map((post) => (
+								<PostBox post={post} key={post.id} />
+							))
+						) : (
+							<div className="post__no-posts">
+								<div className="post__text">게시글이 없습니다.</div>
+							</div>
+						)}
+					</div>
+				)}
 			</div>
 		</div>
 	);
