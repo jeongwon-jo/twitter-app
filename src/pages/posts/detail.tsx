@@ -54,7 +54,7 @@ export default function PostDetailPage() {
 						<PostBox post={post} />
 						<CommentForm post={post} />
 						{post?.comments?.slice(0)?.reverse()?.map((data: CommentProps) => (
-							<CommentBox data={data} post={ post} />
+							<CommentBox key={data.createdAt} data={data} post={ post} />
 						))}
 						
 				</div>

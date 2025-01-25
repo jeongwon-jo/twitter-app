@@ -39,7 +39,7 @@ export default function CommentBox({ data, post }: CommentBoxProps) {
   };
   
   return (
-		<div key={data?.createdAt} className="comment">
+		<div className="comment">
 			<div className="comment__border-box">
 				<div className="comment__profile">
 					<FaUserCircle className="comment__box-profile-icon" />

@@ -885,6 +885,8 @@
 
 .comment {
   padding: 16px;
+  border-bottom: 1px solid $borderColor;
+
   .comment__border-box {
     display: flex;
     align-items: flex-start;
@@ -944,4 +946,32 @@
       }
     }
   } 
+}
+
+// Notification
+.notification {
+  padding: 10px 16px;
+  border-bottom: 1px solid $borderColor;
+  cursor: pointer;
+  font-size: 14px;
+
+  &__flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__createdAt {
+    color: $grayText;
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  &__unread {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: $primaryColor;
+
+  }
 }
