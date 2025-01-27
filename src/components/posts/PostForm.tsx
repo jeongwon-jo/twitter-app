@@ -8,8 +8,10 @@ import { toast } from "react-toastify";
 import { IoIosClose } from "react-icons/io";
 import { v4 as uuidv4 } from "uuid";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import useTranslation from "hooks/useTranslation";
 
 export default function PostForm() {
+	const t = useTranslation();
 	const [content, setContent] = useState<string>("")
 	const [tags, setTags] = useState<string[]>([]);
 	const [hashTag, setHashTag] = useState<string>("");
@@ -45,7 +47,7 @@ export default function PostForm() {
 		if (e.keyCode === 32 && e.target.value.trim() !== '') {
 			// 만약 같은 태그가 있다면 에러를 띄운다
 			if (tags?.includes(e.target.value?.trim())) {
-				toast.error("같은 태그가 있습니다.")
+				toast.error(t('TOAST_HASHTAG_DUPPLICATION'))
 			} else {
 				// 아니라면 태그를 생성해 준다.
 				setTags((prev) => (prev?.length > 0 ? [...prev, hashTag] : [hashTag]))
@@ -92,6 +94,7 @@ export default function PostForm() {
 				uid: user?.uid,
 				hashTags: tags,
 				imageUrl: imageUrl,
+				profileUrl: user?.photoURL
 			});
 
 			setTags([])
@@ -99,7 +102,7 @@ export default function PostForm() {
 			setContent("")
 			setImageFile(null)
 			
-			toast.success("게시글을 생성했습니다.");
+			toast.success(t('TOAST_POST_COMPLETE'));
 			setIsSubmitting(false);
 			navigate("/");
 		} catch (e:any) {
@@ -122,7 +125,7 @@ export default function PostForm() {
 					name="content"
 					id="content"
 					className="post-form__textarea"
-					placeholder="무슨 일이 일어나고 있나요?"
+					placeholder={t("CONTENT_PLACEHOLDER")}
 					onChange={onChange}
 					value={content}
 				></textarea>
@@ -160,7 +163,7 @@ export default function PostForm() {
 					className="post-form__input"
 					name="hashtag"
 					id="hashtag"
-					placeholder="해시태그 + 스페이스바 입력"
+					placeholder={t("HASHTAGS_PLACEHOLDER")}
 					onChange={onchangeHashTag}
 					onKeyUp={handleKeyUp}
 					value={hashTag}
@@ -182,7 +185,7 @@ export default function PostForm() {
 				</div>
 				<input
 					type="submit"
-					value="게시하기"
+					value={t("BTN_POST_SUBMIT")}
 					className="post-form__submit-btn"
 					disabled={isSubmitting}
 				/>

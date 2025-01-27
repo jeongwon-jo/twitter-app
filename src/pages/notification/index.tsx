@@ -4,8 +4,8 @@ import NotificationBox from "components/notifications/NotificationBox";
 import AuthContext from "context/AuthContext";
 import { collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { db } from "firebaseApp";
+import useTranslation from "hooks/useTranslation";
 import { useContext, useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom";
 
 export interface NotificationProps {
   id: string;
@@ -15,7 +15,9 @@ export interface NotificationProps {
   content: string;
   createdAt: string
 }
+
 export default function NotificationPage() {
+  const t = useTranslation();
   const { user } = useContext(AuthContext);
   const [notifications, setNotifications] = useState<NotificationProps[]>([])
 
@@ -43,7 +45,7 @@ export default function NotificationPage() {
           {notifications?.length > 0 ? notifications?.map((noti) => (
             <NotificationBox key={noti.id} notification={noti} />)):
           <div className="post__no-posts">
-            <div className="post__text">알림이 없습니다.</div>
+            <div className="post__text">{t("NOTIFICATIONS_NO_POSTS")}</div>
           </div>}
         </div>
       </div>

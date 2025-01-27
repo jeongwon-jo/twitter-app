@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/images/common/logo.png";
+import useTranslation from "hooks/useTranslation";
 
 interface LoginStep2Props {
 	error: string;
@@ -11,6 +12,7 @@ interface LoginStep2Props {
 }
 
 export default function LoginStep2({ error, email, password, onChange, onSubmit, setStep }: LoginStep2Props) {
+	const t = useTranslation();
 	const navigate = useNavigate();
 
 	return (
@@ -29,9 +31,9 @@ export default function LoginStep2({ error, email, password, onChange, onSubmit,
 			</div>
 			<div className="account-page">
 				<form className="form form--lg" onSubmit={onSubmit}>
-					<div className="form__title">비밀번호를 입력하세요.</div>
+					<div className="form__title">{t("LOGIN_TITLE2")}</div>
 					<div className="form__block">
-						<label htmlFor="email">이메일</label>
+						<label htmlFor="email">{t("SIGNUP_EMAIL")}</label>
 						<input
 							type="text"
 							name="email"
@@ -44,7 +46,7 @@ export default function LoginStep2({ error, email, password, onChange, onSubmit,
 						/>
 					</div>
 					<div className="form__block">
-						<label htmlFor="password">비밀번호</label>
+						<label htmlFor="password">{t("SIGNUP_PWD")}</label>
 						<input
 							type="password"
 							name="password"
@@ -69,14 +71,14 @@ export default function LoginStep2({ error, email, password, onChange, onSubmit,
 									setStep(1);
 								}}
 							>
-								이전
+								{t("BTN_PREV")}
 							</button>
 							<button
 								type="submit"
 								className="btn_signup"
 								disabled={error.length > 0}
 							>
-								로그인
+								{t("LOGIN_BTN2")}
 							</button>
 						</div>
 					</div>

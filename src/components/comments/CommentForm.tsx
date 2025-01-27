@@ -2,6 +2,7 @@ import userEvent from "@testing-library/user-event";
 import AuthContext from "context/AuthContext";
 import { addDoc, arrayUnion, collection, doc, updateDoc } from "firebase/firestore";
 import { db } from "firebaseApp";
+import useTranslation from "hooks/useTranslation";
 import { PostProps } from "pages/home"
 import { useContext, useState } from "react";
 import { toast } from "react-toastify";
@@ -11,6 +12,7 @@ export interface CommentFormProps {
 }
 
 export function CommentForm({ post }: CommentFormProps) {
+	const t = useTranslation();
   const [comment, setComment] = useState<string>("")
   const { user } = useContext(AuthContext);
 
@@ -61,7 +63,7 @@ export function CommentForm({ post }: CommentFormProps) {
 				}
         
         setComment("")
-				toast.success("댓글을 입력했습니다.");
+				toast.success(t("TOAST_COMMENTS_COMPLETE"));
 			}
 		} catch (e: any) {
 			console.log(e);
@@ -85,7 +87,7 @@ export function CommentForm({ post }: CommentFormProps) {
 					name="content"
 					id="content"
 					className="post-form__textarea"
-					placeholder="답글 게시하기"
+					placeholder={t("COMMENT_PLACEHOLDER")}
 					value={comment}
 					onChange={onChange}
 				></textarea>
@@ -94,7 +96,7 @@ export function CommentForm({ post }: CommentFormProps) {
 				<div></div>
 				<input
 					type="submit"
-					value="게시하기"
+					value={t("BTN_POST_SUBMIT")}
 					className="post-form__submit-btn"
 					disabled={!comment}
 				/>

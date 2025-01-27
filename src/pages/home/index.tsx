@@ -5,6 +5,7 @@ import { collection, query, onSnapshot, orderBy, doc, where } from "firebase/fir
 import AuthContext from "context/AuthContext";
 import { db } from "firebaseApp";
 import { LogoHeader } from "components/LogoHeader";
+import useTranslation from "hooks/useTranslation";
 
 export interface PostProps {
   id: string;
@@ -27,10 +28,11 @@ interface UserProps {
 type tabType = "all" | "following"
 
 export default function HomePage() {
+	const t = useTranslation();
 	const [allposts, setAllPosts] = useState<PostProps[]>([]);
 	const [followingposts, setFollowingPosts] = useState<PostProps[]>([]);
 	const [followingIds, setFollowingIds] = useState<string[]>([""]);
-	const [activeTab, setActiveTab] = useState<string>("all")
+	const [activeTab, setActiveTab] = useState<tabType>("all")
 	const { user } = useContext(AuthContext);
 
 	// 실시간 동기화로 user의 팔로잉 id배열 가져오기
@@ -84,7 +86,7 @@ export default function HomePage() {
 							}`}
 							onClick={() => setActiveTab("all")}
 						>
-							전체
+							{t('TAB_ALL')}
 						</div>
 						<div
 							className={`home__tab ${
@@ -92,7 +94,7 @@ export default function HomePage() {
 							}`}
 							onClick={() => setActiveTab("following")}
 						>
-							팔로우 중
+							{t('TAB_FOLLOWER')}
 						</div>
 					</div>
 				</div>
@@ -105,7 +107,7 @@ export default function HomePage() {
 							allposts?.map((post) => <PostBox post={post} key={post.id} />)
 						) : (
 							<div className="post__no-posts">
-								<div className="post__text">게시글이 없습니다.</div>
+								<div className="post__text">{t("NO_POSTS")}</div>
 							</div>
 						)}
 					</div>
@@ -119,7 +121,7 @@ export default function HomePage() {
 							))
 						) : (
 							<div className="post__no-posts">
-								<div className="post__text">게시글이 없습니다.</div>
+								<div className="post__text">{t("NO_POSTS")}</div>
 							</div>
 						)}
 					</div>

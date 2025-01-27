@@ -1,7 +1,7 @@
 import Loader from "components/loader/Loader";
 import logo from "../../assets/images/common/logo.png";
 import PostBox from "components/posts/PostBox";
-import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "firebaseApp";
 import { PostProps } from "pages/home";
 import { useCallback, useEffect, useState } from "react";

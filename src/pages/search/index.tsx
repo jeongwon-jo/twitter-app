@@ -6,8 +6,10 @@ import { collection, onSnapshot, orderBy, query, where } from "firebase/firestor
 import AuthContext from "context/AuthContext";
 import { db } from "firebaseApp";
 import { LogoHeader } from "components/LogoHeader";
+import useTranslation from "hooks/useTranslation";
 
 export default function SearchPage() {
+	const t = useTranslation();
   const [posts, setPosts] = useState<PostProps[]>([]);
   const [tagQuery, setTagQuery] = useState<string>("");
   const { user } = useContext(AuthContext);
@@ -39,7 +41,7 @@ export default function SearchPage() {
 					<input
 						type="text"
 						className="home__search"
-						placeholder="해시태그 검색"
+						placeholder={t("SEARCH_PLACEHOLDER")}
 						value={tagQuery}
 						onChange={onChange}
 					></input>
@@ -50,7 +52,7 @@ export default function SearchPage() {
 						posts?.map((post) => <PostBox post={post} key={post.id} />)
 					) : (
 						<div className="post__no-posts">
-							<div className="post__text">검색어를 입력하세요.</div>
+							<div className="post__text">{t("SEARCH_NO_RESULTS")}</div>
 						</div>
 					)}
 				</div>

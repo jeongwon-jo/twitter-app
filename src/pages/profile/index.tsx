@@ -7,16 +7,26 @@ import { db } from "firebaseApp";
 import { useNavigate } from "react-router-dom";
 import { LogoHeader } from "components/LogoHeader";
 import profileDefaultImg from "../../assets/images/common/user_img.png";
+import { useRecoilState } from "recoil";
+import { languageState } from "atom";
+import useTranslation from "hooks/useTranslation";
 
 type TabType = "my" | "like";
 
 export default function ProfilePage() {
+	const t = useTranslation();
 	const [activeTab, setActiveTab] = useState<TabType>("my");
   const [myPosts, setMyPosts] = useState<PostProps[]>([]);
   const [likePosts, setLikePosts] = useState<PostProps[]>([]);
   const { user } = useContext(AuthContext);
-  const navigate= useNavigate()
-  
+	// ERROR: react 19 버전에서 에러남 버전 다운그레이드 진행
+	const [language, setLanguage] = useRecoilState(languageState);
+  const navigate = useNavigate()
+
+  const onClickLanguage = () => {
+		setLanguage(language === "ko" ? "en" : "ko")
+		localStorage.setItem("language", language === "ko" ? "en" : "ko")
+	}
   useEffect(() => {
     if (user) {
       let postsRef = collection(db, "posts");
@@ -53,13 +63,16 @@ export default function ProfilePage() {
 							className="profile__img"
 						/>
 					</div>
-					<button
-						type="button"
-						className="profile__btn"
-						onClick={() => navigate("/profile/edit")}
-					>
-						프로필 수정
-					</button>
+					<div className="profile__flex">
+						<button
+							type="button"
+							className="profile__btn"
+							onClick={() => navigate("/profile/edit")}
+						>
+							{t("PROFILE_EDIT_BTN")}
+						</button>
+						<button type="button" className="profile__btn" onClick={() => onClickLanguage()}>{language === "ko" ? "English" : "한국어"}</button>
+					</div>
 				</div>
 				<div className="profile__text">
 					<div className="profile__name">
@@ -72,13 +85,13 @@ export default function ProfilePage() {
 						className={`home__tab ${activeTab === "my" && "home__tab--active"}`}
 						onClick={() => setActiveTab("my")}
 					>
-						게시글
+						{t("PROFILE_TAB_POST")}
 					</div>
 					<div
 						className={`home__tab ${activeTab === "like" && "home__tab--active"}`}
 						onClick={() => setActiveTab("like")}
 					>
-						마음에 들어요
+						{t("PROFILE_TAB_LIKE")}
 					</div>
 				</div>
 				{activeTab === "my" && (
@@ -87,7 +100,7 @@ export default function ProfilePage() {
 							myPosts?.map((post) => <PostBox post={post} key={post.id} />)
 						) : (
 							<div className="post__no-posts">
-								<div className="post__text">게시글이 없습니다.</div>
+								<div className="post__text">{t("NO_POSTS")}</div>
 							</div>
 						)}
 					</div>
@@ -98,7 +111,7 @@ export default function ProfilePage() {
 							likePosts?.map((post) => <PostBox post={post} key={post.id} />)
 						) : (
 							<div className="post__no-posts">
-								<div className="post__text">게시글이 없습니다.</div>
+								<div className="post__text">{t("NO_POSTS")}</div>
 							</div>
 						)}
 					</div>

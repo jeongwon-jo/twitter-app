@@ -9,10 +9,12 @@ import { storage } from "firebaseApp";
 import { v4 as uuidv4 } from "uuid";
 import { updateProfile } from "firebase/auth";
 import { toast } from "react-toastify";
+import useTranslation from "hooks/useTranslation";
 
 const STORAGE_DOWNLOAD_URL_STR = "https://firebasestorage.googleapis.com";
 
 export default function ProfileEditPage() {
+	const t = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [displayName, setDisplayName] = useState<string>("");
   const [profileImgUrl, setProfileImgUrl] = useState<string | null>(null);
@@ -68,7 +70,7 @@ export default function ProfileEditPage() {
 					displayName: displayName || null,
 					photoURL: newProfileImageUrl || "",
         }).then(() => {
-          toast.success("프로필이 업데이트 되었습니다.")
+          toast.success(t("TOAST_PROFILE_COMPLETE"))
           navigate("/profile")
         }).catch((e:any) => {
           console.log(e);
@@ -152,13 +154,13 @@ export default function ProfileEditPage() {
 						</div>
 						<div className="profile-info__list-area">
 							<div className="profile-info__item">
-								<label htmlFor="displayName">이름</label>
+								<label htmlFor="displayName">{t("PROFILE_USER_NAME")}</label>
 								<input
 									type="text"
 									id="displayName"
 									name="displayName"
 									className="profile-img__input"
-									placeholder="이름"
+									placeholder={t("PROFILE_USER_NAME")}
 									onChange={onChange}
 									value={displayName}
 								/>
@@ -168,7 +170,7 @@ export default function ProfileEditPage() {
 						<div className="profile__submit-area">
 							<input
 								type="submit"
-								value="프로필 수정"
+								value={t("BTN_PROFILE_UPDATE")}
 								className="profile__submit-btn"
 								disabled={isSubmitting}
 							/>

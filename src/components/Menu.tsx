@@ -7,15 +7,17 @@ import { getAuth, signOut } from "firebase/auth";
 import { IoSearch } from "react-icons/io5";
 import { app } from "firebaseApp";
 import { toast } from "react-toastify";
+import useTranslation from "hooks/useTranslation";
 
 export default function MenuList() {
+	const t = useTranslation();
 	const navigate = useNavigate();
 
 	const onSignOut = async () => {
 		try {
 			const auth = getAuth(app);
 			await signOut(auth);
-			toast.success("로그아웃 되었습니다.");
+			toast.success(t("TOAST_LOGOUT_COMPLETE"));
 		} catch (error: any) {
 			toast.error(error.code);
 			console.log(error);

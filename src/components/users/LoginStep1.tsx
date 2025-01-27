@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/images/common/logo.png";
+import useTranslation from "hooks/useTranslation";
 
 interface LoginStep1Props {
 	error: string;
@@ -9,6 +10,7 @@ interface LoginStep1Props {
 }
 
 export default function LoginStep1({ error, email, onChange, setStep }: LoginStep1Props) {
+	const t = useTranslation();
 	const navigate = useNavigate();
 	return (
 		<>
@@ -27,10 +29,10 @@ export default function LoginStep1({ error, email, onChange, setStep }: LoginSte
 			<div className="account-page">
 				<form className="form form--lg">
 					<div className="form__title">
-						시작하려면 먼저 이메일을 입력하세요.
+						{t("LOGIN_TITLE")}
 					</div>
 					<div className="form__block">
-						<label htmlFor="email">이메일</label>
+						<label htmlFor="email">{t("SIGNUP_EMAIL")}</label>
 						<input
 							type="text"
 							name="email"
@@ -56,7 +58,7 @@ export default function LoginStep1({ error, email, onChange, setStep }: LoginSte
 								}}
 								disabled={error.length > 0}
 							>
-								다음
+								{t("BTN_NEXT")}
 							</button>
 						</div>
 					</div>

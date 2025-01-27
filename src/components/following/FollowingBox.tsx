@@ -1,6 +1,7 @@
 import AuthContext from "context/AuthContext";
 import { addDoc, arrayRemove, arrayUnion, collection, doc, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "firebaseApp";
+import useTranslation from "hooks/useTranslation";
 import { PostProps } from "pages/home";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -14,6 +15,7 @@ interface UserProps {
 }
 
 export default function FollowingBox({ post }: FollowingProps) {
+	const t = useTranslation();
 	const [postFollowers, setPostFollowers] = useState<any>([]);
 	const { user } = useContext(AuthContext);
 
@@ -57,7 +59,7 @@ export default function FollowingBox({ post }: FollowingProps) {
 				})
 			}
 
-			toast.success("팔로우처리 되었습니다.");
+			toast.success(t("TOAST_FOLLOWING"));
 		} catch (e) {
 			console.log(e);
 		}
@@ -118,7 +120,7 @@ export default function FollowingBox({ post }: FollowingProps) {
 					className="post__follower-btn"
 					onClick={onClickDeleteFollow}
 				>
-					팔로워
+					{t("BTN_FOLLOWER")}
 				</button>
 			) : (
 				<button
@@ -126,7 +128,7 @@ export default function FollowingBox({ post }: FollowingProps) {
 					className="post__follow-btn"
 					onClick={onClickFollow}
 				>
-					팔로우하기
+					{t("BTN_FOLLOWING")}
 				</button>
 			)}
 		</>

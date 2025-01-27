@@ -8,8 +8,10 @@ import {
 } from "firebase/auth";
 import { app } from "firebaseApp";
 import { toast } from "react-toastify";
+import useTranslation from "hooks/useTranslation";
 
 export default function LoginHomePage() {
+	const t = useTranslation();
 	const onClickSocialLogin = async (e: any) => {
 		if (e.target.tagName.toLowerCase() === "span") {
 			e.currentTarget.click();
@@ -33,7 +35,7 @@ export default function LoginHomePage() {
 			provider as GoogleAuthProvider | GithubAuthProvider
 		)
 			.then((result) => {
-				toast.success("로그인 되었습니다.");
+				toast.success(t("TOAST_LOGIN_COMPLETE"));
 			})
 			.catch((error) => {
 				const errorMessage = error.message;
@@ -50,10 +52,7 @@ export default function LoginHomePage() {
 			</div>
 			<div className="account-page">
 				<div className="account_title">
-					<h2>
-						지금 세계에서 무슨 일이
-						<br />
-						일어나고 있는지 알아보세요.
+					<h2 dangerouslySetInnerHTML={ {__html:t("LOGIN_HOME_TITLE")}}>
 					</h2>
 				</div>
 				<div className="login-home__btns">
@@ -63,7 +62,7 @@ export default function LoginHomePage() {
 						className="login-btn__google"
 						onClick={onClickSocialLogin}
 					>
-						<span>Google로 계속하기</span>
+						<span>{t("LOGIN_GOOGLE")}</span>
 					</button>
 					<button
 						type="button"
@@ -71,40 +70,40 @@ export default function LoginHomePage() {
 						className="login-btn__github"
 						onClick={onClickSocialLogin}
 					>
-						<span>Github로 계속하기</span>
+						<span>{t("LOGIN_GITHUB")}</span>
 					</button>
 					<div className="btn_bar">
 						<span className="bar"></span>
-						<p>또는</p>
+						<p>{t("LOGIN_OR")}</p>
 						<span className="bar"></span>
 					</div>
 					<Link to="/users/signup">
 						<button type="button" className="login-btn__signup">
-							계정만들기
+							{t("SIGNUP")}
 						</button>
 					</Link>
 				</div>
 				<div className="login-home__txts">
 					<p>
-						가입하면 트위터의
+						{t("SIGNUP_TXT1")}
 						<Link to="" className="link">
-							이용약관
+							{t("SIGNUP_BTN1")}
 						</Link>
 						,
 						<Link to="" className="link">
-							개인정보 처리방침
+							{t("SIGNUP_BTN2")}
 						</Link>
 						,
 						<Link to="" className="link">
-							쿠키 사용
+							{t("SIGNUP_BTN3")}
 						</Link>
-						에 동의하게 됩니다.
+						{t("SIGNUP_TXT2")}
 					</p>
 				</div>
 				<div className="login-home__login">
-					<span>이미 계정이 있으세요?</span>
+					<span>{t("LOGIN_TXT")}</span>
 					<Link to="/users/login" className="link">
-						로그인하기
+					{t("LOGIN_BTN")}
 					</Link>
 				</div>
 			</div>
