@@ -18,6 +18,13 @@
   padding-bottom: 68px;
 }
 
+@include mobile {
+  .layout {
+    border-left: none;
+    border-right: none;
+  }
+}
+
 .button {
   border: none;
   padding: 4px 8px;
@@ -515,8 +522,14 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
       margin-bottom: 12px;
       margin-top: 2px;
+      row-gap: 8px;
+
+      @include mobile {
+        flex-direction: column;
+      }
 
       .post-flex {
         display: flex;

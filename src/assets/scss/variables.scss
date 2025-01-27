@@ -9,3 +9,34 @@ $dangerColor: #dc2626;
 $dangerHoverColor: #dc26268e;
 $grayColor: #6b7280;
 $grayHoverColor: #4b4d52;
+
+// Break Point
+$mobile: 360px;
+$tablet: 600x;
+$desktop: 1024px;
+
+// media Query mixin
+@mixin xsMobile  {
+  @media (max-width: ($mobile - 1)) {
+    @content
+  }
+};
+
+@mixin mobile  {
+  @media (min-width: $mobile) and (max-width: ($tablet - 1)) {
+    // 내부에 있는 콘텐츠에 모두 적용하겠다.
+    @content
+  }
+};
+
+@mixin tablet  {
+  @media (min-width: $tablet) and (max-width: ($desktop - 1)) {
+    @content
+  }
+};
+
+@mixin desktop  {
+  @media (min-width: $desktop) {
+    @content
+  }
+}
